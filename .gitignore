@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+*.egg-info/
+
+# SQLite database (dados nao vao pro git)
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Variaveis de ambiente / segredos
+.env
+.env.local
+*.key
+secret*
+
+# IDE / Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Build / dist
+dist/
+build/
+node_modules/
