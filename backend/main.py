@@ -8,6 +8,9 @@ from config import CORS_ORIGINS
 from db import Base, engine
 from models import Usuario
 from routers import auth as auth_router
+from routers import colheitas as colheitas_router
+from routers import lavouras as lavouras_router
+from routers import resumo as resumo_router
 from schemas import UsuarioOut
 
 Base.metadata.create_all(bind=engine)
@@ -23,6 +26,9 @@ app.add_middleware(
 )
 
 app.include_router(auth_router.router)
+app.include_router(lavouras_router.router)
+app.include_router(colheitas_router.router)
+app.include_router(resumo_router.router)
 
 
 @app.get("/")
