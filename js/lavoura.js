@@ -26,7 +26,6 @@ const dataBr = (iso) => {
   return `${d}/${m}/${y}`;
 };
 const hoje = () => new Date().toISOString().slice(0, 10);
-const escapar = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function receitaBrutaColheita(c) {
   return c.qtd_caixas * c.preco_caixa + c.qtd_premium * c.preco_premium + c.doce_kg * c.preco_doce_kg;
@@ -78,8 +77,6 @@ async function carregarTudo() {
 // =========================
 function preencherFormRegistrar() {
   document.getElementById('r-data').value = hoje();
-
-  // Pre-preencher custos com a colheita mais recente
   if (colheitas.length) {
     const ultima = colheitas[colheitas.length - 1];
     document.getElementById('r-emb-caixa').value = ultima.custo_embalagem_caixa || 0;
@@ -125,7 +122,7 @@ document.getElementById('form-registrar').addEventListener('submit', async (ev) 
     document.getElementById('r-doce-kg').value = 0;
     colheitas = await api.get(`/lavouras/${lavouraId}/colheitas`);
     renderTabela();
-    resumo = null;  // forca recalculo no dashboard
+    resumo = null;
   } catch (err) {
     let msg = err.message || 'Erro ao salvar.';
     if (err.status === 409) msg = 'Já existe uma colheita registrada nessa data. Vá na Tabela pra editar.';
@@ -143,17 +140,19 @@ function renderTabela() {
   const tbody = document.querySelector('#tabela-colheitas tbody');
   const vazio = document.getElementById('tabela-vazia');
   const tabela = document.getElementById('tabela-colheitas');
+  const btnExp = document.getElementById('btn-exportar-csv');
   tbody.innerHTML = '';
 
   if (!colheitas.length) {
     vazio.classList.remove('escondido');
     tabela.classList.add('escondido');
+    btnExp.disabled = true;
     return;
   }
   vazio.classList.add('escondido');
   tabela.classList.remove('escondido');
+  btnExp.disabled = false;
 
-  // Ordena por data desc (mais recente em cima)
   const ordenadas = [...colheitas].sort((a, b) => b.data.localeCompare(a.data));
   for (const c of ordenadas) {
     const bruta = receitaBrutaColheita(c);
@@ -193,45 +192,117 @@ document.querySelector('#tabela-colheitas tbody').addEventListener('click', asyn
       mostrarMensagem('#msg-tabela', 'erro', err.message || 'Erro ao excluir.');
     }
   } else if (btn.dataset.acao === 'editar') {
-    editarColheita(colheita);
+    abrirModalEdicao(colheita);
   }
 });
 
-function editarColheita(c) {
-  // Edição simples via prompts encadeados — visual minimalista mas funcional.
-  // (Futuro: trocar por modal bonitinho)
-  const novo = (rotulo, valor) => {
-    const r = prompt(rotulo, valor);
-    return r === null ? null : parseFloat(r) || 0;
-  };
-  const qc = novo(`Qtd caixas (${dataBr(c.data)})`, c.qtd_caixas);
-  if (qc === null) return;
-  const pc = novo('Preço por caixa (R$)', c.preco_caixa);
-  if (pc === null) return;
-  const qp = novo('Qtd premium', c.qtd_premium);
-  if (qp === null) return;
-  const pp = novo('Preço por premium (R$)', c.preco_premium);
-  if (pp === null) return;
-  const dk = novo('Doce kg', c.doce_kg);
-  if (dk === null) return;
-  const pd = novo('Preço por kg de doce (R$)', c.preco_doce_kg);
-  if (pd === null) return;
-  const ec = novo('Custo embalagem caixa (R$)', c.custo_embalagem_caixa);
-  if (ec === null) return;
-  const ep = novo('Custo embalagem premium (R$)', c.custo_embalagem_premium);
-  if (ep === null) return;
+// =========================
+// Modal de edição
+// =========================
+const modalEditar = document.getElementById('modal-editar');
+let colheitaEditando = null;
 
-  api.patch(`/colheitas/${c.id}`, {
-    qtd_caixas: qc, preco_caixa: pc,
-    qtd_premium: qp, preco_premium: pp,
-    doce_kg: dk, preco_doce_kg: pd,
-    custo_embalagem_caixa: ec, custo_embalagem_premium: ep,
-  }).then(async () => {
+function abrirModalEdicao(c) {
+  colheitaEditando = c;
+  limparMensagem('#msg-editar');
+  document.getElementById('modal-data').textContent = `Data: ${dataBr(c.data)}`;
+  document.getElementById('e-qtd-caixas').value = c.qtd_caixas;
+  document.getElementById('e-preco-caixa').value = c.preco_caixa;
+  document.getElementById('e-qtd-premium').value = c.qtd_premium;
+  document.getElementById('e-preco-premium').value = c.preco_premium;
+  document.getElementById('e-doce-kg').value = c.doce_kg;
+  document.getElementById('e-preco-doce').value = c.preco_doce_kg;
+  document.getElementById('e-emb-caixa').value = c.custo_embalagem_caixa;
+  document.getElementById('e-emb-premium').value = c.custo_embalagem_premium;
+  document.getElementById('e-obs').value = c.observacao || '';
+  modalEditar.classList.remove('escondido');
+}
+
+function fecharModalEdicao() {
+  modalEditar.classList.add('escondido');
+  colheitaEditando = null;
+}
+
+document.getElementById('btn-editar-cancelar').addEventListener('click', fecharModalEdicao);
+modalEditar.addEventListener('click', (e) => { if (e.target === modalEditar) fecharModalEdicao(); });
+
+document.getElementById('form-editar').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  if (!colheitaEditando) return;
+  limparMensagem('#msg-editar');
+  const val = (id) => parseFloat(document.getElementById(id).value || '0');
+  const dados = {
+    qtd_caixas: val('e-qtd-caixas'),
+    preco_caixa: val('e-preco-caixa'),
+    qtd_premium: val('e-qtd-premium'),
+    preco_premium: val('e-preco-premium'),
+    doce_kg: val('e-doce-kg'),
+    preco_doce_kg: val('e-preco-doce'),
+    custo_embalagem_caixa: val('e-emb-caixa'),
+    custo_embalagem_premium: val('e-emb-premium'),
+    observacao: document.getElementById('e-obs').value.trim() || null,
+  };
+  const botao = ev.target.querySelector('button[type=submit]');
+  botao.disabled = true;
+  botao.textContent = 'Salvando...';
+  try {
+    await api.patch(`/colheitas/${colheitaEditando.id}`, dados);
     colheitas = await api.get(`/lavouras/${lavouraId}/colheitas`);
     renderTabela();
     resumo = null;
-  }).catch(err => mostrarMensagem('#msg-tabela', 'erro', err.message || 'Erro ao editar.'));
-}
+    fecharModalEdicao();
+  } catch (err) {
+    mostrarMensagem('#msg-editar', 'erro', err.message || 'Erro ao salvar.');
+  } finally {
+    botao.disabled = false;
+    botao.textContent = 'Salvar';
+  }
+});
+
+// =========================
+// Exportar CSV
+// =========================
+document.getElementById('btn-exportar-csv').addEventListener('click', () => {
+  if (!colheitas.length) return;
+  const cabecalho = [
+    'Data', 'Qtd caixas', 'Preço caixa (R$)',
+    'Qtd premium', 'Preço premium (R$)',
+    'Doce (kg)', 'Preço doce/kg (R$)',
+    'Custo embalagem caixa (R$)', 'Custo embalagem premium (R$)',
+    'Receita bruta (R$)', 'Custo embalagem (R$)', 'Receita líquida (R$)',
+    'Observação',
+  ];
+  const ordenadas = [...colheitas].sort((a, b) => a.data.localeCompare(b.data));
+  const linhas = ordenadas.map(c => {
+    const bruta = receitaBrutaColheita(c);
+    const custo = custoEmbalagemColheita(c);
+    return [
+      c.data,
+      c.qtd_caixas, c.preco_caixa,
+      c.qtd_premium, c.preco_premium,
+      c.doce_kg, c.preco_doce_kg,
+      c.custo_embalagem_caixa, c.custo_embalagem_premium,
+      bruta.toFixed(2), custo.toFixed(2), (bruta - custo).toFixed(2),
+      (c.observacao || '').replace(/[\r\n]+/g, ' '),
+    ];
+  });
+  const escapar = (v) => {
+    const s = String(v ?? '');
+    return /[",;\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const csv = [cabecalho, ...linhas].map(l => l.map(escapar).join(';')).join('\r\n');
+  // BOM pra Excel detectar UTF-8 com acentos
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const nome = `${lavouraAtual.nome.replace(/[^\w-]+/g, '_')}_${lavouraAtual.ano_safra}.csv`;
+  a.href = url;
+  a.download = nome;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
 
 // =========================
 // Aba DASHBOARD

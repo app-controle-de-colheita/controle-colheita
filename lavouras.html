@@ -19,12 +19,50 @@
   </header>
 
   <main class="container">
-    <div class="acoes-topo">
-      <h1>Minhas lavouras</h1>
-      <button class="btn" id="btn-nova">+ Nova lavoura</button>
-    </div>
+    <h1 style="margin-bottom:1rem;">Visão geral</h1>
 
     <div id="msg" class="mensagem escondido"></div>
+
+    <!-- Overview consolidado -->
+    <div id="overview" class="cards-resumo escondido">
+      <div class="card-stat destaque">
+        <div class="rotulo">Receita líquida total</div>
+        <div class="valor" id="ov-receita-liquida">—</div>
+      </div>
+      <div class="card-stat">
+        <div class="rotulo">Receita bruta</div>
+        <div class="valor" id="ov-receita-bruta">—</div>
+      </div>
+      <div class="card-stat">
+        <div class="rotulo">Custo embalagens</div>
+        <div class="valor" id="ov-custo-emb">—</div>
+      </div>
+      <div class="card-stat">
+        <div class="rotulo">Lavouras ativas</div>
+        <div class="valor" id="ov-ativas">—</div>
+      </div>
+      <div class="card-stat">
+        <div class="rotulo">Total caixas</div>
+        <div class="valor" id="ov-caixas">—</div>
+      </div>
+      <div class="card-stat">
+        <div class="rotulo">Total premium</div>
+        <div class="valor" id="ov-premium">—</div>
+      </div>
+      <div class="card-stat">
+        <div class="rotulo">Doce (kg)</div>
+        <div class="valor" id="ov-doce">—</div>
+      </div>
+      <div class="card-stat">
+        <div class="rotulo">Total de colheitas</div>
+        <div class="valor" id="ov-colheitas">—</div>
+      </div>
+    </div>
+
+    <div class="acoes-topo" style="margin-top:2rem;">
+      <h2 style="margin:0;">Minhas lavouras</h2>
+      <button class="btn" id="btn-nova">+ Nova lavoura</button>
+    </div>
 
     <div id="grade-ativas" class="grade-lavouras"></div>
 
@@ -38,8 +76,8 @@
   </main>
 
   <!-- Modal de nova lavoura -->
-  <div id="modal-nova" class="escondido" style="position:fixed; inset:0; background:rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center; padding:1rem; z-index:10;">
-    <div class="card" style="width:100%; max-width:480px;">
+  <div id="modal-nova" class="modal escondido">
+    <div class="card modal-card">
       <h2>Nova lavoura</h2>
       <div id="msg-modal" class="mensagem escondido"></div>
       <form id="form-nova">
