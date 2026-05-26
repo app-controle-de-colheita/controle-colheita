@@ -1,0 +1,20 @@
+[Unit]
+Description=Morango Colheita FastAPI backend
+Documentation=https://github.com/app-controle-de-colheita/controle-colheita
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=irrigacao
+Group=irrigacao
+WorkingDirectory=/opt/morango-colheita/backend
+EnvironmentFile=/opt/morango-colheita/backend/.env
+ExecStart=/opt/morango-colheita/backend/.venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/opt/morango-colheita/backend/uvicorn.log
+StandardError=append:/opt/morango-colheita/backend/uvicorn.log
+
+[Install]
+WantedBy=multi-user.target

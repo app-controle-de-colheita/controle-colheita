@@ -13,6 +13,7 @@ from routers import auth as auth_router
 from routers import colheitas as colheitas_router
 from routers import lavouras as lavouras_router
 from routers import resumo as resumo_router
+from routers import resumo_geral as resumo_geral_router
 from schemas import UsuarioOut
 
 Base.metadata.create_all(bind=engine)
@@ -31,6 +32,7 @@ app.include_router(auth_router.router)
 app.include_router(lavouras_router.router)
 app.include_router(colheitas_router.router)
 app.include_router(resumo_router.router)
+app.include_router(resumo_geral_router.router)
 
 # Serve o frontend em /app/ durante desenvolvimento.
 # Em producao o frontend ficara no GitHub Pages.

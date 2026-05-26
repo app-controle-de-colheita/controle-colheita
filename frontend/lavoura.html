@@ -112,13 +112,16 @@
     <!-- =============== ABA TABELA =============== -->
     <div class="aba-conteudo escondido" data-aba="tabela">
       <div class="card">
-        <h2>Todas as colheitas</h2>
-        <div id="msg-tabela" class="mensagem escondido"></div>
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem;">
+          <h2 style="margin:0;">Todas as colheitas</h2>
+          <button class="btn secundario" id="btn-exportar-csv">⬇️ Exportar CSV</button>
+        </div>
+        <div id="msg-tabela" class="mensagem escondido" style="margin-top:1rem;"></div>
         <div id="tabela-vazia" class="vazio escondido">
           <p>Nenhuma colheita registrada ainda.</p>
           <p>Vá na aba <strong>Registrar</strong> pra adicionar a primeira.</p>
         </div>
-        <div style="overflow-x:auto;">
+        <div style="overflow-x:auto; margin-top:1rem;">
           <table class="tabela-colheitas" id="tabela-colheitas">
             <thead>
               <tr>
@@ -251,6 +254,75 @@
       </div>
     </div>
   </main>
+
+  <!-- =============== MODAL DE EDIÇÃO DE COLHEITA =============== -->
+  <div id="modal-editar" class="modal escondido">
+    <div class="card modal-card">
+      <h2>Editar colheita</h2>
+      <p id="modal-data" style="color:var(--cor-texto-fraco); margin-top:-.5rem;"></p>
+      <div id="msg-editar" class="mensagem escondido"></div>
+
+      <form id="form-editar">
+        <h3>🍓 Caixas normais</h3>
+        <div class="grid-dois">
+          <div class="form-grupo">
+            <label for="e-qtd-caixas">Quantidade</label>
+            <input type="number" id="e-qtd-caixas" step="0.01" min="0">
+          </div>
+          <div class="form-grupo">
+            <label for="e-preco-caixa">Preço unitário (R$)</label>
+            <input type="number" id="e-preco-caixa" step="0.01" min="0">
+          </div>
+        </div>
+
+        <h3>⭐ Caixas premium</h3>
+        <div class="grid-dois">
+          <div class="form-grupo">
+            <label for="e-qtd-premium">Quantidade</label>
+            <input type="number" id="e-qtd-premium" step="0.01" min="0">
+          </div>
+          <div class="form-grupo">
+            <label for="e-preco-premium">Preço unitário (R$)</label>
+            <input type="number" id="e-preco-premium" step="0.01" min="0">
+          </div>
+        </div>
+
+        <h3>🍯 Doce</h3>
+        <div class="grid-dois">
+          <div class="form-grupo">
+            <label for="e-doce-kg">Kg</label>
+            <input type="number" id="e-doce-kg" step="0.01" min="0">
+          </div>
+          <div class="form-grupo">
+            <label for="e-preco-doce">Preço por kg (R$)</label>
+            <input type="number" id="e-preco-doce" step="0.01" min="0">
+          </div>
+        </div>
+
+        <h3>📦 Custo de embalagem</h3>
+        <div class="grid-dois">
+          <div class="form-grupo">
+            <label for="e-emb-caixa">Por caixa normal (R$)</label>
+            <input type="number" id="e-emb-caixa" step="0.01" min="0">
+          </div>
+          <div class="form-grupo">
+            <label for="e-emb-premium">Por caixa premium (R$)</label>
+            <input type="number" id="e-emb-premium" step="0.01" min="0">
+          </div>
+        </div>
+
+        <div class="form-grupo">
+          <label for="e-obs">Observação</label>
+          <textarea id="e-obs" rows="2" maxlength="500"></textarea>
+        </div>
+
+        <div style="display:flex; gap:.5rem; justify-content:flex-end;">
+          <button type="button" class="btn secundario" id="btn-editar-cancelar">Cancelar</button>
+          <button type="submit" class="btn">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script type="module" src="js/lavoura.js"></script>
 </body>
