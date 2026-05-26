@@ -1,12 +1,22 @@
 // Cliente HTTP do backend. Centraliza base URL, token JWT e tratamento de erros.
 
-// Em dev (servido pelo proprio FastAPI), a base eh a mesma origem (caminho vazio).
-// Em prod (frontend no GitHub Pages), trocar pra URL HTTPS do Tailscale Funnel.
-const API_BASE = window.location.origin.startsWith('http://10.0.1.14')
-  || window.location.hostname === 'localhost'
-  || window.location.hostname === '127.0.0.1'
-    ? ''  // mesma origem do servidor FastAPI
-    : 'https://TROCAR-PELO-FUNNEL';  // ajustar na Fase 3
+// Logica da base:
+// - Se a pagina foi servida pelo proprio FastAPI (mesmo host:porta), usa caminho vazio
+// - Caso contrario (GitHub Pages, abrir HTML local), aponta pro Funnel HTTPS publico
+const FUNNEL_URL = 'https://raspberrypi.taileb9ced.ts.net:8443';
+
+function detectarBase() {
+  const h = window.location.hostname;
+  const p = window.location.port;
+  // Servido pelo FastAPI local
+  if ((h === '10.0.1.14' || h === 'localhost' || h === '127.0.0.1') && p === '8000') return '';
+  // Servido pelo proprio Funnel (acessou direto pelo URL HTTPS)
+  if (window.location.origin === FUNNEL_URL) return '';
+  // GitHub Pages ou qualquer outro lugar: vai pro Funnel
+  return FUNNEL_URL;
+}
+
+const API_BASE = detectarBase();
 
 const TOKEN_KEY = 'morango_token';
 const USUARIO_KEY = 'morango_usuario';
