@@ -14,5 +14,14 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
 CORS_ORIGINS = os.getenv(
     "CORS_ORIGINS",
-    "http://localhost:5500,http://127.0.0.1:5500,https://app-controle-de-colheita.github.io",
+    ",".join([
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+        "http://localhost:8000",
+        "http://10.0.1.14:8000",
+        "https://app-controle-de-colheita.github.io",
+        "https://renanc534-beep.github.io",
+        "https://raspberrypi.taileb9ced.ts.net",
+        "https://raspberrypi.taileb9ced.ts.net:8443",
+    ]),
 ).split(",")
