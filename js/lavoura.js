@@ -353,9 +353,9 @@ function renderGraficos() {
   const precoPremium = ordenadas.map(c => c.qtd_premium > 0 ? c.preco_premium : null);
   const precoDoce = ordenadas.map(c => c.doce_kg > 0 ? c.preco_doce_kg : null);
 
-  const corCaixa = '#c93553';
-  const corPremium = '#d4a017';
-  const corDoce = '#7a4e9f';
+  const corCaixa = '#d62828';   // vermelho morango — fruta
+  const corPremium = '#2e7d32'; // verde folha — premium
+  const corDoce = '#b08543';    // caramelo — doce
 
   const baseOpts = {
     responsive: true,
