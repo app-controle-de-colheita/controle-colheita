@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <header class="topo">
@@ -30,24 +31,223 @@
     <div id="msg" class="mensagem escondido"></div>
 
     <div class="tabs">
-      <button class="ativa" data-aba="registrar">Registrar</button>
-      <button data-aba="tabela">Tabela</button>
-      <button data-aba="dashboard">Dashboard</button>
-      <button data-aba="configurar">Configurar</button>
+      <button class="ativa" data-aba="registrar">📝 Registrar</button>
+      <button data-aba="tabela">📋 Tabela</button>
+      <button data-aba="dashboard">📊 Dashboard</button>
+      <button data-aba="configurar">⚙️ Configurar</button>
     </div>
 
-    <div id="conteudo-abas">
-      <div class="aba-conteudo" data-aba="registrar">
-        <p class="vazio">Em construção — próximo lote.</p>
+    <!-- =============== ABA REGISTRAR =============== -->
+    <div class="aba-conteudo" data-aba="registrar">
+      <div class="card">
+        <h2>Registrar colheita do dia</h2>
+        <p style="color:var(--cor-texto-fraco); margin-top:-.5rem;">Os custos de embalagem vêm pré-preenchidos com o último valor usado. Deixe em <strong>zero</strong> o que não houve naquele dia.</p>
+
+        <div id="msg-registrar" class="mensagem escondido"></div>
+
+        <form id="form-registrar">
+          <div class="form-grupo">
+            <label for="r-data">Data</label>
+            <input type="date" id="r-data" required>
+          </div>
+
+          <h3 style="margin-top:1.5rem;">🍓 Caixas normais</h3>
+          <div class="grid-dois">
+            <div class="form-grupo">
+              <label for="r-qtd-caixas">Quantidade</label>
+              <input type="number" id="r-qtd-caixas" step="0.01" min="0" value="0">
+            </div>
+            <div class="form-grupo">
+              <label for="r-preco-caixa">Preço unitário (R$)</label>
+              <input type="number" id="r-preco-caixa" step="0.01" min="0" value="0">
+            </div>
+          </div>
+
+          <h3>⭐ Caixas premium</h3>
+          <div class="grid-dois">
+            <div class="form-grupo">
+              <label for="r-qtd-premium">Quantidade</label>
+              <input type="number" id="r-qtd-premium" step="0.01" min="0" value="0">
+            </div>
+            <div class="form-grupo">
+              <label for="r-preco-premium">Preço unitário (R$)</label>
+              <input type="number" id="r-preco-premium" step="0.01" min="0" value="0">
+            </div>
+          </div>
+
+          <h3>🍯 Doce</h3>
+          <div class="grid-dois">
+            <div class="form-grupo">
+              <label for="r-doce-kg">Kg</label>
+              <input type="number" id="r-doce-kg" step="0.01" min="0" value="0">
+            </div>
+            <div class="form-grupo">
+              <label for="r-preco-doce">Preço por kg (R$)</label>
+              <input type="number" id="r-preco-doce" step="0.01" min="0" value="0">
+            </div>
+          </div>
+
+          <h3>📦 Custo de embalagem</h3>
+          <div class="grid-dois">
+            <div class="form-grupo">
+              <label for="r-emb-caixa">Por caixa normal (R$)</label>
+              <input type="number" id="r-emb-caixa" step="0.01" min="0" value="0">
+            </div>
+            <div class="form-grupo">
+              <label for="r-emb-premium">Por caixa premium (R$)</label>
+              <input type="number" id="r-emb-premium" step="0.01" min="0" value="0">
+            </div>
+          </div>
+
+          <div class="form-grupo">
+            <label for="r-obs">Observação (opcional)</label>
+            <textarea id="r-obs" rows="2" maxlength="500" placeholder="Ex: chuva forte de manhã, comprador X levou todas as premium"></textarea>
+          </div>
+
+          <button type="submit" class="btn bloco">Salvar colheita</button>
+        </form>
       </div>
-      <div class="aba-conteudo escondido" data-aba="tabela">
-        <p class="vazio">Em construção.</p>
+    </div>
+
+    <!-- =============== ABA TABELA =============== -->
+    <div class="aba-conteudo escondido" data-aba="tabela">
+      <div class="card">
+        <h2>Todas as colheitas</h2>
+        <div id="msg-tabela" class="mensagem escondido"></div>
+        <div id="tabela-vazia" class="vazio escondido">
+          <p>Nenhuma colheita registrada ainda.</p>
+          <p>Vá na aba <strong>Registrar</strong> pra adicionar a primeira.</p>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="tabela-colheitas" id="tabela-colheitas">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Caixas</th>
+                <th>Premium</th>
+                <th>Doce</th>
+                <th>Receita bruta</th>
+                <th>Líquida</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
-      <div class="aba-conteudo escondido" data-aba="dashboard">
-        <p class="vazio">Em construção.</p>
+    </div>
+
+    <!-- =============== ABA DASHBOARD =============== -->
+    <div class="aba-conteudo escondido" data-aba="dashboard">
+      <div id="dashboard-vazio" class="vazio escondido">
+        <p>Sem colheitas para mostrar gráficos ainda.</p>
       </div>
-      <div class="aba-conteudo escondido" data-aba="configurar">
-        <p class="vazio">Em construção.</p>
+
+      <div id="dashboard-conteudo">
+        <div class="cards-resumo">
+          <div class="card-stat">
+            <div class="rotulo">Receita bruta</div>
+            <div class="valor" id="d-receita-bruta">—</div>
+          </div>
+          <div class="card-stat">
+            <div class="rotulo">Custo embalagens</div>
+            <div class="valor" id="d-custo-emb">—</div>
+          </div>
+          <div class="card-stat destaque">
+            <div class="rotulo">Receita líquida</div>
+            <div class="valor" id="d-receita-liquida">—</div>
+          </div>
+          <div class="card-stat">
+            <div class="rotulo">Total caixas</div>
+            <div class="valor" id="d-total-caixas">—</div>
+          </div>
+          <div class="card-stat">
+            <div class="rotulo">Total premium</div>
+            <div class="valor" id="d-total-premium">—</div>
+          </div>
+          <div class="card-stat">
+            <div class="rotulo">Doce (kg)</div>
+            <div class="valor" id="d-total-doce">—</div>
+          </div>
+          <div class="card-stat">
+            <div class="rotulo">Preço médio caixa</div>
+            <div class="valor" id="d-preco-med-cx">—</div>
+          </div>
+          <div class="card-stat">
+            <div class="rotulo">Preço médio premium</div>
+            <div class="valor" id="d-preco-med-pr">—</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:1rem;">
+          <h3>Evolução diária — quantidades</h3>
+          <canvas id="grafico-qtd" height="200"></canvas>
+        </div>
+
+        <div class="card" style="margin-top:1rem;">
+          <h3>Evolução diária — receita</h3>
+          <canvas id="grafico-receita" height="200"></canvas>
+        </div>
+
+        <div class="card" style="margin-top:1rem;">
+          <h3>Receita acumulada</h3>
+          <canvas id="grafico-acumulado" height="200"></canvas>
+        </div>
+
+        <div class="card" style="margin-top:1rem;">
+          <h3>Preço médio por tipo (ao longo dos dias)</h3>
+          <canvas id="grafico-preco" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== ABA CONFIGURAR =============== -->
+    <div class="aba-conteudo escondido" data-aba="configurar">
+      <div class="card">
+        <h2>Configurações da lavoura</h2>
+        <div id="msg-config" class="mensagem escondido"></div>
+
+        <form id="form-config">
+          <div class="form-grupo">
+            <label for="c-nome">Nome</label>
+            <input type="text" id="c-nome" required maxlength="120">
+          </div>
+          <div class="form-grupo">
+            <label for="c-tipo">Tipo</label>
+            <select id="c-tipo" required>
+              <option value="estufa">Estufa</option>
+              <option value="campo">Campo</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+          <div class="grid-dois">
+            <div class="form-grupo">
+              <label for="c-inicio">Data de início</label>
+              <input type="date" id="c-inicio">
+            </div>
+            <div class="form-grupo">
+              <label for="c-fim">Data de fim (encerramento)</label>
+              <input type="date" id="c-fim">
+            </div>
+          </div>
+          <div class="form-grupo">
+            <label for="c-obs">Observação</label>
+            <textarea id="c-obs" rows="2" maxlength="500"></textarea>
+          </div>
+          <button type="submit" class="btn">Salvar alterações</button>
+        </form>
+
+        <hr style="margin:2rem 0; border:none; border-top:1px solid var(--cor-borda);">
+
+        <h3>Encerrar ou reativar safra</h3>
+        <p style="color:var(--cor-texto-fraco);">Uma lavoura encerrada continua nos relatórios históricos, mas fica separada das ativas na lista principal.</p>
+        <button class="btn secundario" id="btn-toggle-ativa">Encerrar safra</button>
+
+        <hr style="margin:2rem 0; border:none; border-top:1px solid var(--cor-borda);">
+
+        <h3 style="color:var(--cor-erro);">Excluir lavoura</h3>
+        <p style="color:var(--cor-texto-fraco);">Apaga a lavoura e <strong>todas</strong> as colheitas registradas. Esta ação não pode ser desfeita.</p>
+        <button class="btn" id="btn-excluir" style="background:var(--cor-erro);">Excluir lavoura permanentemente</button>
       </div>
     </div>
   </main>
