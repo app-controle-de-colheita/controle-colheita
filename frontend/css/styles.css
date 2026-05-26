@@ -2,15 +2,18 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 :root {
-  --cor-fundo: #fdf7f6;
+  --cor-fundo: #fbf8f4;
   --cor-superficie: #ffffff;
-  --cor-borda: #ead7d4;
-  --cor-texto: #2a1f1d;
-  --cor-texto-fraco: #7a6663;
-  --cor-primaria: #c93553;
-  --cor-primaria-escura: #a82743;
-  --cor-primaria-clara: #fde6ea;
-  --cor-sucesso: #2e8b57;
+  --cor-borda: #e7dccf;
+  --cor-texto: #1f2a1c;
+  --cor-texto-fraco: #6b6b6b;
+  --cor-primaria: #d62828;
+  --cor-primaria-escura: #9d0208;
+  --cor-primaria-clara: #fde2e2;
+  --cor-verde: #2e7d32;
+  --cor-verde-escura: #1b5e20;
+  --cor-verde-clara: #dff0e0;
+  --cor-sucesso: #2e7d32;
   --cor-erro: #c0392b;
   --cor-aviso: #b8860b;
   --raio: 10px;
@@ -279,8 +282,8 @@ a:hover { text-decoration: underline; }
   color: var(--cor-texto);
 }
 .card-stat.destaque {
-  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-primaria-escura));
-  border-color: var(--cor-primaria-escura);
+  background: linear-gradient(135deg, var(--cor-verde), var(--cor-verde-escura));
+  border-color: var(--cor-verde-escura);
 }
 .card-stat.destaque .rotulo,
 .card-stat.destaque .valor { color: #fff; }
