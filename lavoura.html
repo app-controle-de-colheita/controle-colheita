@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lavoura — Morango Colheita</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca"><a href="lavouras.html" style="color:inherit; text-decoration:none;">Morango Colheita</a></div>
+    <div class="usuario">
+      <span id="nome-usuario"></span>
+      <button class="sair" id="btn-sair">Sair</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="acoes-topo">
+      <div>
+        <a href="lavouras.html" style="font-size:.85rem;">← Minhas lavouras</a>
+        <h1 id="titulo-lavoura" style="margin-top:.25rem;">Carregando...</h1>
+        <div id="meta-lavoura" class="meta" style="color:var(--cor-texto-fraco);"></div>
+      </div>
+    </div>
+
+    <div id="msg" class="mensagem escondido"></div>
+
+    <div class="tabs">
+      <button class="ativa" data-aba="registrar">Registrar</button>
+      <button data-aba="tabela">Tabela</button>
+      <button data-aba="dashboard">Dashboard</button>
+      <button data-aba="configurar">Configurar</button>
+    </div>
+
+    <div id="conteudo-abas">
+      <div class="aba-conteudo" data-aba="registrar">
+        <p class="vazio">Em construção — próximo lote.</p>
+      </div>
+      <div class="aba-conteudo escondido" data-aba="tabela">
+        <p class="vazio">Em construção.</p>
+      </div>
+      <div class="aba-conteudo escondido" data-aba="dashboard">
+        <p class="vazio">Em construção.</p>
+      </div>
+      <div class="aba-conteudo escondido" data-aba="configurar">
+        <p class="vazio">Em construção.</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="js/lavoura.js"></script>
+</body>
+</html>

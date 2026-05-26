@@ -1,0 +1,244 @@
+/* ============ Reset & base ============ */
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --cor-fundo: #fdf7f6;
+  --cor-superficie: #ffffff;
+  --cor-borda: #ead7d4;
+  --cor-texto: #2a1f1d;
+  --cor-texto-fraco: #7a6663;
+  --cor-primaria: #c93553;
+  --cor-primaria-escura: #a82743;
+  --cor-primaria-clara: #fde6ea;
+  --cor-sucesso: #2e8b57;
+  --cor-erro: #c0392b;
+  --cor-aviso: #b8860b;
+  --raio: 10px;
+  --sombra: 0 1px 3px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+  --fonte: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--fonte);
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+h1, h2, h3 { margin-top: 0; font-weight: 600; }
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1.1rem; }
+
+a { color: var(--cor-primaria); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ============ Layout ============ */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.topo {
+  background: var(--cor-superficie);
+  border-bottom: 1px solid var(--cor-borda);
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topo .marca {
+  font-weight: 700;
+  color: var(--cor-primaria);
+  font-size: 1.1rem;
+}
+.topo .marca::before { content: '🍓 '; }
+.topo .usuario { color: var(--cor-texto-fraco); font-size: 0.9rem; }
+.topo .usuario .sair {
+  margin-left: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--cor-primaria);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* ============ Card ============ */
+.card {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 1.25rem;
+  box-shadow: var(--sombra);
+}
+
+/* ============ Form ============ */
+.form-grupo { margin-bottom: 1rem; }
+.form-grupo label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--cor-texto-fraco);
+  margin-bottom: 0.3rem;
+}
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 8px;
+  font: inherit;
+  background: #fff;
+  color: var(--cor-texto);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px var(--cor-primaria-clara);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.1rem;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--cor-primaria);
+  color: #fff;
+  transition: background 0.15s, transform 0.05s;
+}
+.btn:hover { background: var(--cor-primaria-escura); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn.secundario {
+  background: transparent;
+  color: var(--cor-primaria);
+  border: 1px solid var(--cor-borda);
+}
+.btn.secundario:hover { background: var(--cor-primaria-clara); }
+.btn.bloco { width: 100%; }
+
+/* ============ Tabs ============ */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--cor-borda);
+  margin-bottom: 1rem;
+}
+.tabs button {
+  background: none;
+  border: none;
+  padding: 0.7rem 1rem;
+  font: inherit;
+  cursor: pointer;
+  color: var(--cor-texto-fraco);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tabs button.ativa {
+  color: var(--cor-primaria);
+  border-bottom-color: var(--cor-primaria);
+  font-weight: 500;
+}
+
+/* ============ Mensagens ============ */
+.mensagem {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.mensagem.erro { background: #fdecea; color: var(--cor-erro); border: 1px solid #f5c6c2; }
+.mensagem.sucesso { background: #e6f4ec; color: var(--cor-sucesso); border: 1px solid #b6dcc4; }
+.mensagem.aviso { background: #fdf5e2; color: var(--cor-aviso); border: 1px solid #ecd9a1; }
+
+/* ============ Tela de login ============ */
+.tela-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+.tela-login .card { width: 100%; max-width: 420px; }
+.tela-login h1 { text-align: center; color: var(--cor-primaria); }
+.tela-login h1::before { content: '🍓 '; }
+.tela-login .subtitulo {
+  text-align: center;
+  color: var(--cor-texto-fraco);
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ============ Cards de lavoura ============ */
+.grade-lavouras {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.card-lavoura {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.15s, border-color 0.15s;
+  display: block;
+  color: inherit;
+}
+.card-lavoura:hover {
+  transform: translateY(-2px);
+  border-color: var(--cor-primaria);
+  box-shadow: var(--sombra);
+  text-decoration: none;
+}
+.card-lavoura .nome {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+.card-lavoura .meta {
+  color: var(--cor-texto-fraco);
+  font-size: 0.85rem;
+}
+.card-lavoura .badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--cor-primaria-clara);
+  color: var(--cor-primaria);
+  margin-right: 0.25rem;
+}
+.card-lavoura.inativa { opacity: 0.6; }
+.card-lavoura.inativa .badge { background: #eee; color: var(--cor-texto-fraco); }
+
+/* ============ Utilitarios ============ */
+.acoes-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.vazio {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--cor-texto-fraco);
+}
+.escondido { display: none !important; }
