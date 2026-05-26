@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minhas lavouras — Morango Colheita</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">Morango Colheita</div>
+    <div class="usuario">
+      <span id="nome-usuario"></span>
+      <button class="sair" id="btn-sair">Sair</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="acoes-topo">
+      <h1>Minhas lavouras</h1>
+      <button class="btn" id="btn-nova">+ Nova lavoura</button>
+    </div>
+
+    <div id="msg" class="mensagem escondido"></div>
+
+    <div id="grade-ativas" class="grade-lavouras"></div>
+
+    <h2 id="titulo-encerradas" class="escondido" style="margin-top:2rem;">Lavouras encerradas</h2>
+    <div id="grade-encerradas" class="grade-lavouras"></div>
+
+    <div id="estado-vazio" class="vazio escondido">
+      <p>Você ainda não tem nenhuma lavoura cadastrada.</p>
+      <p>Clique em <strong>"+ Nova lavoura"</strong> pra começar a registrar suas colheitas.</p>
+    </div>
+  </main>
+
+  <!-- Modal de nova lavoura -->
+  <div id="modal-nova" class="escondido" style="position:fixed; inset:0; background:rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center; padding:1rem; z-index:10;">
+    <div class="card" style="width:100%; max-width:480px;">
+      <h2>Nova lavoura</h2>
+      <div id="msg-modal" class="mensagem escondido"></div>
+      <form id="form-nova">
+        <div class="form-grupo">
+          <label for="nl-nome">Nome</label>
+          <input type="text" id="nl-nome" required maxlength="120" placeholder="Ex: Estufa Principal">
+        </div>
+        <div class="form-grupo">
+          <label for="nl-tipo">Tipo</label>
+          <select id="nl-tipo" required>
+            <option value="estufa">Estufa</option>
+            <option value="campo">Campo</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+        <div class="form-grupo">
+          <label for="nl-ano">Ano-safra</label>
+          <input type="number" id="nl-ano" required min="2000" max="2100">
+        </div>
+        <div class="form-grupo">
+          <label for="nl-inicio">Data de início (opcional)</label>
+          <input type="date" id="nl-inicio">
+        </div>
+        <div class="form-grupo">
+          <label for="nl-obs">Observação (opcional)</label>
+          <textarea id="nl-obs" rows="2" maxlength="500"></textarea>
+        </div>
+        <div style="display:flex; gap:.5rem; justify-content:flex-end;">
+          <button type="button" class="btn secundario" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn">Criar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="js/lavouras.js"></script>
+</body>
+</html>

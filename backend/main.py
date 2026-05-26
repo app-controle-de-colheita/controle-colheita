@@ -1,7 +1,9 @@
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from auth import usuario_atual
 from config import CORS_ORIGINS
@@ -29,6 +31,12 @@ app.include_router(auth_router.router)
 app.include_router(lavouras_router.router)
 app.include_router(colheitas_router.router)
 app.include_router(resumo_router.router)
+
+# Serve o frontend em /app/ durante desenvolvimento.
+# Em producao o frontend ficara no GitHub Pages.
+_frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
+if _frontend_dir.is_dir():
+    app.mount("/app", StaticFiles(directory=_frontend_dir, html=True), name="frontend")
 
 
 @app.get("/")

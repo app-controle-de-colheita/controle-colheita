@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morango Colheita</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="tela-login">
+  <main class="card">
+    <h1>Morango Colheita</h1>
+    <p class="subtitulo">Controle de colheita por lavoura e safra</p>
+
+    <div class="tabs" role="tablist">
+      <button id="tab-login" class="ativa" role="tab">Entrar</button>
+      <button id="tab-cadastro" role="tab">Cadastrar</button>
+    </div>
+
+    <div id="msg" class="mensagem escondido"></div>
+
+    <!-- Login -->
+    <form id="form-login">
+      <div class="form-grupo">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" required autocomplete="username">
+      </div>
+      <div class="form-grupo">
+        <label for="login-senha">Senha</label>
+        <input type="password" id="login-senha" required autocomplete="current-password" minlength="6">
+      </div>
+      <button type="submit" class="btn bloco">Entrar</button>
+    </form>
+
+    <!-- Cadastro -->
+    <form id="form-cadastro" class="escondido">
+      <div class="form-grupo">
+        <label for="cad-nome">Nome</label>
+        <input type="text" id="cad-nome" required minlength="2" autocomplete="name">
+      </div>
+      <div class="form-grupo">
+        <label for="cad-email">Email</label>
+        <input type="email" id="cad-email" required autocomplete="email">
+      </div>
+      <div class="form-grupo">
+        <label for="cad-senha">Senha (mínimo 6 caracteres)</label>
+        <input type="password" id="cad-senha" required minlength="6" autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn bloco">Criar conta</button>
+    </form>
+  </main>
+
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>
