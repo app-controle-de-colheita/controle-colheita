@@ -306,6 +306,16 @@ a:hover { text-decoration: underline; }
   overflow-y: auto;
 }
 
+/* ============ Wrapper de grafico (Chart.js precisa de container com altura fixa) ============ */
+.grafico-wrap {
+  position: relative;
+  width: 100%;
+  height: 280px;
+}
+@media (max-width: 600px) {
+  .grafico-wrap { height: 240px; }
+}
+
 /* ============ Tabela ============ */
 .tabela-colheitas {
   width: 100%;
